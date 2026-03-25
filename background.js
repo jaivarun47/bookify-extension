@@ -62,3 +62,17 @@ Format: {"category": "CategoryName", "tags": ["tag1", "tag2"]}`
         console.error('❌ Auto-analysis failed:', error);
     }
 });
+
+// --- KEYBOARD SHORTCUT (optional) ---
+// Note: Chrome owns the actual key combo. Users can change it in chrome://extensions/shortcuts.
+chrome.commands.onCommand.addListener((command) => {
+    if (command !== 'toggle-bookify-popup') return;
+
+    chrome.storage.local.get(['shortcut_enabled'], (result) => {
+        const enabled = result.shortcut_enabled !== false; // default true
+        if (!enabled) return;
+
+        // We can open the popup; closing isn't controllable via commands.
+        chrome.action.openPopup();
+    });
+});

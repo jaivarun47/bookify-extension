@@ -12,26 +12,14 @@
 <body>
 
     <div id="app-container">
-        <!-- Auth Screen -->
-        <div id="auth-screen" class="screen">
-            <h1><i class="fas fa-bookmark"></i> Bookify</h1>
-            <p>Organize. Secure. Sync.</p>
-            <button id="google-login-btn" class="btn primary-btn">
-                <i class="fab fa-google"></i> Login with Google
-            </button>
-            <p class="auth-helper-text">
-                (A new tab will open to login)
-            </p>
-        </div>
-
-        <!-- Main Dashboard -->
-        <div id="dashboard-screen" class="screen hidden">
+        <div id="dashboard-screen" class="screen">
             <header>
                 <div class="logo">Bookify</div>
                 <div class="user-controls">
-                    <span id="user-email"></span>
+                    <span id="user-email">Guest mode</span>
+                    <button id="google-login-btn" class="icon-btn" title="Login with Google"><i class="fab fa-google"></i></button>
                     <button id="settings-btn" class="icon-btn" title="Settings"><i class="fas fa-cog"></i></button>
-                    <button id="logout-btn" class="icon-btn" title="Logout"><i class="fas fa-sign-out-alt"></i></button>
+                    <button id="logout-btn" class="icon-btn hidden" title="Logout"><i class="fas fa-sign-out-alt"></i></button>
                 </div>
             </header>
 
@@ -76,6 +64,33 @@
                             <span id="analysis-status">Initializing...</span>
                         </div>
                     </div>
+
+                    <hr class="divider">
+
+                    <h4><i class="fas fa-book"></i> Gemini API Quick Manual</h4>
+                    <p class="helper-text">
+                        Bookify uses the Gemini API to categorize bookmarks and generate tags. This feature is optional:
+                        if no key is set, AI analysis is disabled (manual categories/tags and the vault still work).
+                    </p>
+                    <ul class="helper-list">
+                        <li>Get a Gemini API key from Google AI Studio / Google Cloud.</li>
+                        <li>Paste it into <b>Gemini API Key</b> and click <b>Save Key</b>.</li>
+                        <li>If you change your key, save again; the extension uses the latest saved value.</li>
+                        <li>Auto-analysis of newly created bookmarks requires the key to be set.</li>
+                    </ul>
+
+                    <hr class="divider">
+
+                    <h4><i class="fas fa-keyboard"></i> Keyboard Shortcut</h4>
+                    <p class="helper-text">
+                        Chrome controls the actual key binding. You can enable/disable the feature here, and change the key combo in
+                        Chrome's extension shortcuts page. The shortcut can open the popup; closing still requires manual action.
+                    </p>
+                    <div class="input-group">
+                        <label>
+                            <input type="checkbox" id="shortcut-enabled-checkbox"> Enable toggle shortcut
+                        </label>
+                    </div>
                 </div>
 
                 <!-- Category Detail View -->
@@ -109,6 +124,9 @@
                         <input type="password" id="vault-pin" maxlength="4" placeholder="PIN">
                         <p id="vault-error" class="error-text hidden">Incorrect PIN</p>
                         <button id="unlock-vault-btn" class="btn primary-btn">Unlock</button>
+                        <button id="reset-vault-pin-btn" class="btn secondary-btn" title="Delete private vault contents and reset PIN">
+                            Forgot PIN? Reset Vault
+                        </button>
 
                         <div id="setup-pin-section" class="hidden">
                             <p>Set a 4-digit PIN for your Vault</p>
@@ -165,7 +183,7 @@
     <script src="scripts/firebase-auth-compat.js"></script>
     <script src="scripts/firebase-firestore-compat.js"></script>
 
-    <script src="popup.js"></script>
+    <script type="module" src="popup/main.js"></script>
 </body>
 
 </html>

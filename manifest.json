@@ -31,6 +31,14 @@
   "background": {
     "service_worker": "background.js"
   },
+  "commands": {
+    "toggle-bookify-popup": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+B"
+      },
+      "description": "Open the Bookify extension popup"
+    }
+  },
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
