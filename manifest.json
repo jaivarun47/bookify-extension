@@ -1,0 +1,42 @@
+{
+  "manifest_version": 3,
+  "name": "Bookify - Bookmark with Privacy",
+  "version": "1.0",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2A981bKaS9pqy70ZZTP58BuOEF0+SlPsfgnnOZwHhre6srp3VLF20dZLvUv9moymWxe6/C18GJOPJnUeNsMC25LHNMNDWa8/bjiG4AZz/d2vwFmMH9iazGoChSXYal1GHdulDixxQiu8xoSK6xxss63mVYZO/7qnqEQLa8lTtu6aBFGUqSOUwDXyw1OFl3Q1NUVSfevyVCZ0rtJ/kEdA61HSOasSfSjfNaxn2oRblzqeJjrNLKPXfZSIh4JpAgRdhFzO9qXnqEISrSE4ygHXWlmsP14nzrau5oBwRfuYhSlEoABxuEe9IbvUcRMFqnOzABnup9PwCpVIYcgtfYqOhwIDAQAB",
+  "description": "Smart bookmark manager with auto-sorting, tagging, and a secure private vault.",
+  "permissions": [
+    "bookmarks",
+    "storage",
+    "identity"
+  ],
+  "host_permissions": [
+    "https://generativelanguage.googleapis.com/*"
+  ],
+  "oauth2": {
+    "client_id": "882791110164-6djl9eghttmoub803vlrog6mgrrhkvs6.apps.googleusercontent.com",
+    "scopes": [
+      "openid",
+      "email",
+      "profile"
+    ]
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; style-src 'self' https://cdnjs.cloudflare.com"
+  }
+}

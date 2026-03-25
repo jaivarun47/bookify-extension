@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookify</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+
+    <div id="app-container">
+        <!-- Auth Screen -->
+        <div id="auth-screen" class="screen">
+            <h1><i class="fas fa-bookmark"></i> Bookify</h1>
+            <p>Organize. Secure. Sync.</p>
+            <button id="google-login-btn" class="btn primary-btn">
+                <i class="fab fa-google"></i> Login with Google
+            </button>
+            <p class="auth-helper-text">
+                (A new tab will open to login)
+            </p>
+        </div>
+
+        <!-- Main Dashboard -->
+        <div id="dashboard-screen" class="screen hidden">
+            <header>
+                <div class="logo">Bookify</div>
+                <div class="user-controls">
+                    <span id="user-email"></span>
+                    <button id="settings-btn" class="icon-btn" title="Settings"><i class="fas fa-cog"></i></button>
+                    <button id="logout-btn" class="icon-btn" title="Logout"><i class="fas fa-sign-out-alt"></i></button>
+                </div>
+            </header>
+
+            <nav class="tabs">
+                <button class="tab-btn active" data-tab="categories">Categories</button>
+                <button class="tab-btn" data-tab="all-bookmarks">All</button>
+                <button class="tab-btn private-tab" data-tab="private">
+                    <i class="fas fa-lock"></i> Vault
+                </button>
+            </nav>
+
+            <!-- Search Bar Container -->
+            <div class="search-bar" id="search-container">
+                <input type="text" id="search-input" placeholder="Search bookmarks or tags...">
+            </div>
+
+            <div id="content-area">
+
+                <!-- Settings View -->
+                <div id="settings-view" class="view hidden">
+                    <h3><i class="fas fa-robot"></i> AI Settings</h3>
+                    <p class="helper-text">Enter your Google Gemini API Key to enable auto-tagging and smart
+                        categorization.</p>
+
+                    <div class="input-group">
+                        <label>Gemini API Key</label>
+                        <input type="password" id="gemini-api-key" placeholder="AIzaSy...">
+                        <button id="save-api-key-btn" class="btn primary-btn">Save Key</button>
+                    </div>
+                    <p id="api-key-status" class="status-msg"></p>
+
+                    <hr class="divider">
+
+                    <div class="ai-actions">
+                        <h4>Analyze Bookmarks</h4>
+                        <p class="helper-text">The AI will categorize your bookmarks and generate tags.</p>
+                        <button id="analyze-btn" class="btn secondary-btn" disabled>
+                            <i class="fas fa-magic"></i> Start Analysis
+                        </button>
+                        <div id="analysis-progress" class="hidden">
+                            <div class="spinner"></div>
+                            <span id="analysis-status">Initializing...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category Detail View -->
+                <div id="category-detail-view" class="view hidden">
+                    <div class="detail-header">
+                        <button id="back-to-categories" class="icon-btn"><i class="fas fa-arrow-left"></i></button>
+                        <h3 id="category-title">Category Name</h3>
+                    </div>
+                    <ul id="category-list" class="bookmark-list"></ul>
+                </div>
+
+                <!-- Categories View -->
+                <div id="categories-view" class="view">
+                    <div class="categories-header">
+                        <button id="create-category-btn" class="btn sm-btn secondary-btn">+ New Category</button>
+                    </div>
+                    <div id="category-grid" class="category-grid"></div>
+                </div>
+
+                <!-- All Bookmarks View -->
+                <div id="all-bookmarks-view" class="view hidden">
+                    <ul id="bookmarks-list" class="bookmark-list"></ul>
+                </div>
+
+                <!-- Private Vault (Locked) -->
+                <div id="private-locked-view" class="view hidden">
+                    <div class="lock-screen">
+                        <i class="fas fa-lock fa-3x"></i>
+                        <h3>Vault Locked</h3>
+                        <p>Enter PIN to access private bookmarks</p>
+                        <input type="password" id="vault-pin" maxlength="4" placeholder="PIN">
+                        <p id="vault-error" class="error-text hidden">Incorrect PIN</p>
+                        <button id="unlock-vault-btn" class="btn primary-btn">Unlock</button>
+
+                        <div id="setup-pin-section" class="hidden">
+                            <p>Set a 4-digit PIN for your Vault</p>
+                            <input type="password" id="new-pin" maxlength="4" placeholder="0000">
+                            <button id="set-pin-btn" class="btn secondary-btn">Set PIN</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Private Vault (Unlocked) -->
+                <div id="private-unlocked-view" class="view hidden">
+                    <div class="vault-header">
+                        <h3>Private Vault</h3>
+                        <button id="lock-vault-btn" class="icon-btn" title="Lock Vault"><i
+                                class="fas fa-lock"></i></button>
+                    </div>
+
+                    <ul id="private-list" class="bookmark-list private-list-scroll"></ul>
+
+                    <div class="change-pin-container">
+                        <h4>Change PIN</h4>
+                        <div class="change-pin-form">
+                            <input type="password" id="old-pin-input" placeholder="Old PIN" maxlength="4">
+                            <input type="password" id="new-pin-input" placeholder="New PIN" maxlength="4">
+                            <button id="update-pin-btn" class="btn sm-btn secondary-btn">Update</button>
+                        </div>
+                        <p id="pin-msg" class="status-msg"></p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Move Bookmark Modal -->
+    <div id="move-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>Move Bookmark</h3>
+            <select id="category-select">
+                <option value="" disabled selected>Select Category</option>
+            </select>
+
+            <div id="new-category-container" class="hidden">
+                <input type="text" id="new-category-name" placeholder="New Category Name">
+            </div>
+
+            <button id="confirm-move-btn" class="btn primary-btn">Move</button>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs (Local) -->
+    <script src="scripts/firebase-app-compat.js"></script>
+    <script src="scripts/firebase-auth-compat.js"></script>
+    <script src="scripts/firebase-firestore-compat.js"></script>
+
+    <script src="popup.js"></script>
+</body>
+
+</html>
